@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ByteSize STEM — Step Out of the Textbook. Step Into Real STEM.</title>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@700,900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lime:#D6F23C;
+    --forest:#163828;
+    --forest-dark:#0E2A1C;
+    --maroon:#6B1730;
+    --maroon-dark:#4D0F22;
+    --blue:#2A45D6;
+    --lavender:#E9E1F7;
+    --cream:#FBF8F0;
+    --ink:#14140F;
+    --font-display: "General Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;  }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:var(--font-body); background:var(--cream); color:var(--ink);
+    -webkit-font-smoothing:antialiased; line-height:1.5;
+  }
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
+  button{ font:inherit; background:none; border:none; cursor:pointer; color:inherit; }
+
+  .wrap{ max-width:1240px; margin-inline:auto; padding-inline:24px; }
+  .display{ font-family:var(--font-display); font-weight:700; letter-spacing:-0.03em; }
+
+  a:focus-visible, button:focus-visible, summary:focus-visible{
+    outline:3px solid var(--ink); outline-offset:3px; border-radius:4px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+  }
+
+  /* ---------- Header ---------- */
+  header{ position:sticky; top:0; z-index:50; padding:18px 24px 0; pointer-events:none; }
+  header .navbar-shell{
+    pointer-events:auto;
+    max-width:1240px; margin-inline:auto;
+    background:rgba(251,248,240,0.92); backdrop-filter:blur(10px);
+    border:2px solid var(--ink); border-radius:28px;
+    box-shadow:0 6px 20px -8px rgba(20,20,15,0.18);
+    overflow:hidden;
+    transition:max-width 420ms cubic-bezier(0.4,0,0.2,1), padding 420ms cubic-bezier(0.4,0,0.2,1),
+               box-shadow 420ms ease, background 420ms ease, border-radius 420ms ease;
+  }
+  header.is-scrolled{ padding-top:10px; }
+  header.is-scrolled .navbar-shell{
+    max-width:980px;
+    box-shadow:0 10px 28px -10px rgba(20,20,15,0.28);
+    background:rgba(251,248,240,0.97);
+  }
+  nav.navbar{
+    height:74px; display:flex; align-items:center; justify-content:space-between; gap:20px;
+    padding-inline:28px; transition:height 420ms cubic-bezier(0.4,0,0.2,1), padding-inline 420ms ease;
+  }
+  header.is-scrolled nav.navbar{ height:62px; padding-inline:22px; }
+
+  .logo{ display:flex; align-items:center; gap:10px; font-size:22px; transition:font-size 420ms ease; }
+  header.is-scrolled .logo{ font-size:19px; }
+  .logo-badge{ width:36px; height:36px; border-radius:10px; background:var(--forest); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:width 420ms ease, height 420ms ease; }
+  header.is-scrolled .logo-badge{ width:30px; height:30px; }
+  .logo-badge svg{ stroke:var(--lime); }
+  .brand-accent{ color:var(--forest); }
+
+  .nav-links{ display:none; align-items:center; gap:34px; font-weight:600; font-size:15px; }
+  .nav-link{ position:relative; padding-bottom:6px; }
+  .nav-link::after{
+    content:''; position:absolute; left:0; right:0; bottom:0; height:2px;
+    background:var(--forest); transform:scaleX(0); transform-origin:left; transition:transform 200ms ease;
+  }
+  .nav-link:hover::after{ transform:scaleX(1); }
+
+  .nav-cta{
+    display:none; font-family:var(--font-display); font-weight:700; font-size:14px;
+    padding:11px 22px; border-radius:999px; border:2px solid var(--ink);
+    transition:background 180ms, color 180ms; white-space:nowrap;
+  }
+  .nav-cta:hover{ background:var(--ink); color:var(--cream); }
+
+  .menu-btn{ display:flex; flex-direction:column; gap:6px; padding:8px; }
+  .menu-btn span{ display:block; width:24px; height:2px; background:var(--ink); }
+
+  .mobile-menu{
+    display:none; flex-direction:column; gap:16px; font-weight:600;
+    padding:0 28px 22px; overflow:hidden;
+  }
+  .mobile-menu.is-open{ display:flex; }
+  .mobile-menu a{ padding-top:14px; border-top:1px solid rgba(20,20,15,0.1); }
+  .mobile-menu a:first-child{ border-top:1px solid rgba(20,20,15,0.1); }
+
+  @media (min-width:1024px){
+    .nav-links{ display:flex; }
+    .menu-btn{ display:none; }
+    .mobile-menu{ display:none !important; }
+  }
+  @media (min-width:640px){ .nav-cta{ display:inline-flex; } }
+
+  /* ---------- Buttons (shared) ---------- */
+  .btn{
+    font-family:var(--font-display); font-weight:700; font-size:16px;
+    padding:16px 28px; border-radius:999px; display:inline-flex; align-items:center;
+    transition:background 180ms, color 180ms, transform 180ms; cursor:pointer; border:2px solid transparent;
+  }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn-solid-dark{ background:var(--forest); color:var(--lime); box-shadow:0 10px 30px -8px rgba(14,42,28,0.5); }
+  .btn-solid-dark:hover{ background:var(--forest-dark); }
+  .btn-outline-dark{ border-color:var(--forest-dark); color:var(--forest-dark); }
+  .btn-outline-dark:hover{ background:var(--forest-dark); color:var(--lime); }
+  .btn-lime{ background:var(--lime); color:var(--forest-dark); }
+  .btn-white-on-maroon{ background:var(--forest-dark); color:#fff; }
+
+  /* ---------- Hero ---------- */
+  .hero{ position:relative; overflow:hidden; background:var(--lime); }
+  .hero::before{
+    content:''; position:absolute; inset:0; opacity:0.4; pointer-events:none;
+    background-image:radial-gradient(circle at 1px 1px, rgba(0,0,0,0.06) 1px, transparent 0);
+    background-size:14px 14px;
+  }
+  .hero-inner{ position:relative; padding:64px 0 80px; }
+  .hero-grid{ display:grid; gap:56px; align-items:center; }
+  @media (min-width:1024px){ .hero-grid{ grid-template-columns:1fr 1fr; } }
+
+  .eyebrow{
+    display:inline-block; font-family:var(--font-display); font-weight:700; font-size:12px;
+    text-transform:uppercase; letter-spacing:0.08em; padding:8px 16px; border-radius:999px;
+    background:var(--forest); color:var(--lime); margin-bottom:26px;
+  }
+  h1.hero-title{
+    font-family:var(--font-display); font-weight:700; line-height:1.04;
+    font-size:clamp(2.3rem, 6vw, 4.3rem); color:var(--forest-dark);
+  }
+  .hero-sub{ margin-top:22px; font-size:18px; line-height:1.6; max-width:540px; color:rgba(14,42,28,0.85); }
+  .hero-ctas{ margin-top:34px; display:flex; flex-wrap:wrap; align-items:center; gap:16px; }
+  .hero-stats{ margin-top:38px; display:flex; align-items:center; gap:22px; font-size:14px; font-weight:600; color:rgba(14,42,28,0.75); flex-wrap:wrap; }
+  .stat-dot{ width:6px; height:6px; border-radius:999px; background:rgba(14,42,28,0.4); }
+
+  /* ---------- Card deck (signature element) ---------- */
+  .deck{ position:relative; width:100%; max-width:420px; aspect-ratio:1/1; margin-inline:auto; }
+  .deck-card{
+    position:absolute; inset:0; border-radius:28px; padding:28px;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    box-shadow:0 18px 40px -12px rgba(14,42,28,0.35);
+    opacity:0; transform:scale(0.92); transition:opacity 700ms ease, transform 700ms ease;
+  }
+  .deck-card.is-active{ opacity:1; transform:scale(1); z-index:5; }
+  .deck-card svg{ stroke:currentColor; stroke-width:5; fill:none; stroke-linecap:round; stroke-linejoin:round; margin-bottom:16px; }
+  .deck-tag{
+    align-self:flex-start; font-family:var(--font-display); font-weight:700; font-size:12px;
+    letter-spacing:0.06em; text-transform:uppercase; padding:6px 12px; border-radius:999px; margin-bottom:14px;
+  }
+  .deck-card h3{ font-family:var(--font-display); font-weight:700; font-size:24px; line-height:1.25; }
+  .deck-card p{ margin-top:8px; font-size:14px; opacity:0.8; }
+  .deck-dots{ display:flex; gap:8px; justify-content:center; margin-top:22px; }
+  .deck-dot{ width:8px; height:8px; border-radius:999px; background:rgba(14,42,28,0.2); transition:background 300ms, width 300ms; }
+  .deck-dot.is-active{ background:var(--forest); width:26px; }
+
+  /* ---------- Social proof ---------- */
+  .social-proof{ background:var(--cream); padding:80px 0; border-bottom:1px solid rgba(20,20,15,0.1); text-align:center; }
+  .social-proof h2{ font-family:var(--font-display); font-size:clamp(1.7rem,3.5vw,2.3rem); color:var(--forest-dark); }
+  .logo-grid{ margin-top:40px; display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  @media (min-width:640px){ .logo-grid{ grid-template-columns:repeat(3,1fr); } }
+  @media (min-width:1024px){ .logo-grid{ grid-template-columns:repeat(5,1fr); } }
+  .logo-card{
+    background:#fff; border:2px solid rgba(20,20,15,0.1); border-radius:16px;
+    padding:24px 16px; display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:700; font-size:14px; color:rgba(14,42,28,0.8); text-align:center;
+  }
+
+  /* ---------- Feature sections ---------- */
+  .feature{ padding:96px 0; }
+  .feature-grid{ display:grid; gap:56px; align-items:center; }
+  @media (min-width:1024px){ .feature-grid{ grid-template-columns:1fr 1fr; } }
+  .feature h2{ font-family:var(--font-display); font-weight:700; font-size:clamp(2rem,4vw,2.8rem); line-height:1.08; }
+  .feature p.lead{ margin-top:22px; font-size:18px; line-height:1.65; max-width:520px; }
+  .feature-list{ margin-top:30px; display:flex; flex-direction:column; gap:12px; }
+  .feature-list li{ display:flex; gap:12px; align-items:flex-start; }
+  .feature-list .arrow{ font-family:var(--font-display); font-weight:700; flex-shrink:0; }
+  .feature .btn{ margin-top:34px; }
+  .module-tag{
+    display:inline-block; font-family:var(--font-display); font-weight:700; font-size:12px;
+    text-transform:uppercase; letter-spacing:0.08em; padding:8px 16px; border-radius:999px; margin-bottom:24px;
+  }
+
+  /* Bootcamps mockup */
+  .mock-frame{ position:relative; aspect-ratio:1/1; max-width:420px; margin-inline:auto; }
+  .mock-bg{ position:absolute; inset:0; border-radius:36px; background:var(--lime); }
+  .mock-card{
+    position:absolute; top:24px; left:24px; right:24px; bottom:24px; border-radius:28px;
+    background:rgba(255,255,255,0.96); padding:32px; display:flex; flex-direction:column; gap:16px;
+    box-shadow:0 24px 60px -20px rgba(0,0,0,0.3);
+  }
+  .mock-dots{ display:flex; gap:10px; }
+  .mock-dot{ width:12px; height:12px; border-radius:999px; }
+  .mock-label{ font-family:var(--font-display); font-weight:700; font-size:17px; color:var(--forest-dark); }
+  .mock-block{ border-radius:14px; height:96px; background:var(--lavender); }
+  .mock-row{ display:flex; gap:12px; }
+  .mock-row > div{ flex:1; border-radius:14px; height:64px; }
+  .mock-pill{
+    border-radius:14px; height:40px; display:flex; align-items:center; padding:0 16px;
+    font-family:var(--font-display); font-weight:700; font-size:14px; background:var(--forest-dark); color:var(--lime);
+  }
+
+  /* Olympiad stat cards */
+  .stat-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:420px; margin-inline:auto; width:100%; }
+  .stat-card{ border-radius:24px; padding:24px; display:flex; flex-direction:column; gap:8px; }
+  .stat-card .num{ font-family:var(--font-display); font-weight:700; font-size:32px; }
+  .stat-card .label{ font-size:14px; opacity:0.85; }
+  .stat-card.span2{ grid-column:1 / -1; }
+
+  /* ---------- FAQ ---------- */
+  .faq{ background:var(--maroon); padding:96px 0; }
+  .faq-inner{ max-width:720px; margin-inline:auto; padding-inline:24px; }
+  .faq h2{ font-family:var(--font-display); font-weight:700; font-size:clamp(1.8rem,4vw,2.4rem); text-align:center; color:var(--lavender); }
+  .faq-list{ margin-top:40px; display:flex; flex-direction:column; gap:16px; }
+  .faq-item{ background:var(--maroon-dark); border-radius:18px; overflow:hidden; }
+  .faq-item summary{
+    list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between;
+    gap:16px; padding:20px 24px; font-family:var(--font-display); font-weight:700; color:var(--lavender);
+  }
+  .faq-item summary::-webkit-details-marker{ display:none; }
+  .faq-item .chev{ flex-shrink:0; transition:transform 300ms ease; stroke:var(--lavender); stroke-width:2.5; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  .faq-item[open] .chev{ transform:rotate(180deg); }
+  .faq-answer{ padding:0 24px 22px; font-size:15px; line-height:1.6; color:var(--lavender); opacity:0.85; }
+
+  /* ---------- Footer ---------- */
+  .footer-banner{ background:var(--forest-dark); padding:80px 24px; text-align:center; }
+  .footer-banner h2{ font-family:var(--font-display); font-weight:700; font-size:clamp(2rem,5vw,3rem); line-height:1.08; color:#fff; max-width:680px; margin-inline:auto; }
+  .footer-banner p{ margin-top:18px; color:rgba(255,255,255,0.7); max-width:480px; margin-inline:auto; }
+  .footer-banner .btn{ margin-top:34px; }
+
+  .footer-links{ background:#fff; padding:64px 24px; }
+  .footer-links-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:40px; }
+  @media (min-width:640px){ .footer-links-grid{ grid-template-columns:repeat(4,1fr); } }
+  .footer-col h3{ font-family:var(--font-display); font-weight:700; color:var(--forest-dark); margin-bottom:16px; font-size:16px; }
+  .footer-col ul{ display:flex; flex-direction:column; gap:12px; font-size:14px; color:rgba(20,20,15,0.7); }
+  .footer-col a:hover{ color:var(--forest-dark); }
+  .footer-bottom{
+    margin-top:56px; padding-top:32px; border-top:1px solid rgba(20,20,15,0.1);
+    display:flex; flex-direction:column; align-items:center; gap:16px; text-align:center;
+  }
+  @media (min-width:640px){ .footer-bottom{ flex-direction:row; justify-content:space-between; text-align:left; } }
+  .footer-bottom .brand{ font-family:var(--font-display); font-weight:700; font-size:18px; color:var(--forest-dark); }
+  .footer-bottom p{ font-size:12px; color:rgba(20,20,15,0.5); }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER / NAV ============ -->
+<header id="siteHeader">
+  <div class="navbar-shell">
+    <nav class="navbar">
+      <a href="#top" class="logo display">
+        <span class="logo-badge">
+          <svg width="18" height="18" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M12 3 L21 8 L12 13 L3 8 Z"/><path d="M7 11 V17 C7 19 9.5 20.5 12 20.5 C14.5 20.5 17 19 17 17 V11"/></svg>
+        </span>
+        <span>ByteSize <span class="brand-accent">STEM</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="#programs" class="nav-link">Products</a>
+        <a href="#bootcamps" class="nav-link">Bootcamps</a>
+        <a href="#olympiads" class="nav-link">Olympiads</a>
+        <a href="#about" class="nav-link">About Us</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfBYugL52ODu56O-0Rpoj4HK_Nh0RfvDcKDxyeB_986i7HXSw/viewform?usp=publish-editor" class="nav-cta">Bring Us to Your School</a>
+      <button id="menuBtn" class="menu-btn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </nav>
+    <div id="mobileMenu" class="mobile-menu">
+      <a href="#programs">Products</a>
+      <a href="#bootcamps">Bootcamps</a>
+      <a href="#olympiads">Olympiads</a>
+      <a href="#about">About Us</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="top" class="hero">
+  <div class="wrap hero-inner">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">K–12 hands-on STEM</span>
+        <h1 class="hero-title">Step Out of the Textbook.<br>Step Into Real STEM.</h1>
+        <p class="hero-sub">We are an educational organization dedicated to rescuing youth from boring memorization. We run hands-on school bootcamps that dive deep into software development, technology, engineering, and maths with real-world projects and elite international Olympiad training.</p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-solid-dark">Bring Us to Your School</a>
+          <a href="#programs" class="btn btn-outline-dark">Explore Bootcamps</a>
+        </div>
+        <div class="hero-stats">
+          <span>120+ schools reached</span>
+          <span class="stat-dot"></span>
+          <span>40+ Olympiad medals</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="deck" role="region" aria-label="Rotating highlights of bootcamp activities" aria-live="polite">
+
+          <div class="deck-card is-active" style="background:var(--forest-dark); color:var(--lime)">
+            <svg width="56" height="56" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 6V4h10v2M9 19v2M15 19v2M12 9v6M9 12h6"/></svg>
+            <span class="deck-tag" style="background:var(--lime); color:var(--forest-dark)">Live in classrooms</span>
+            <h3>Robotics Bootcamp<br>Day 1 — Lincoln Middle School</h3>
+            <p>Students wire their first motor controller.</p>
+          </div>
+
+          <div class="deck-card" style="background:var(--blue); color:#fff">
+            <svg width="56" height="56" viewBox="0 0 24 24"><path d="M4 18 L4 13 Q4 6 12 6 Q20 6 20 13 L20 18"/><rect x="3" y="15" width="4" height="6" rx="1.5"/><rect x="17" y="15" width="4" height="6" rx="1.5"/></svg>
+            <span class="deck-tag" style="background:#fff; color:var(--blue)">Olympiad track</span>
+            <h3>Math Olympiad Camp<br>Regional Qualifiers</h3>
+            <p>Twelve students, one whiteboard, zero calculators.</p>
+          </div>
+
+          <div class="deck-card" style="background:var(--maroon); color:var(--lavender)">
+            <svg width="56" height="56" viewBox="0 0 24 24"><path d="M4 19 L9 5 L13 15 L16 9 L20 19"/></svg>
+            <span class="deck-tag" style="background:var(--lavender); color:var(--maroon-dark)">Maker session</span>
+            <h3>App Design Sprint<br>Riverside High</h3>
+            <p>Teams pitch their first working prototype.</p>
+          </div>
+
+          <div class="deck-card" style="background:var(--lavender); color:var(--forest-dark)">
+            <svg width="56" height="56" viewBox="0 0 24 24"><path d="M12 2 L15 9 L22 9.5 L17 14.5 L18.5 21.5 L12 18 L5.5 21.5 L7 14.5 L2 9.5 L9 9 Z"/></svg>
+            <span class="deck-tag" style="background:var(--forest-dark); color:var(--lavender)">Competition day</span>
+            <h3>Hack Day Finals<br>Citywide Tech Challenge</h3>
+            <p>Three winning teams head to nationals.</p>
+          </div>
+
+        </div>
+        <div class="deck-dots" id="deckDots"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOCIAL PROOF ============ -->
+<section class="social-proof">
+  <div class="wrap">
+    <h2 class="display">As trusted by...</h2>
+    <div class="logo-grid">
+      <div class="logo-card">Angles Home School</div>
+      <div class="logo-card">The Smart School</div>
+      <div class="logo-card">The Divergent School</div>
+      <div class="logo-card">Agha Khan School</div>
+      <div class="logo-card">The Qasimabad School</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROGRAMS / FEATURES ============ -->
+<section id="programs">
+
+  <!-- Module 01 — Bootcamps -->
+  <div id="bootcamps" class="feature" style="background:var(--blue)">
+    <div class="wrap feature-grid">
+      <div>
+        <div class="mock-frame">
+          <div class="mock-bg"></div>
+          <div class="mock-card">
+            <div class="mock-dots">
+              <span class="mock-dot" style="background:var(--maroon)"></span>
+              <span class="mock-dot" style="background:var(--lime)"></span>
+              <span class="mock-dot" style="background:var(--blue)"></span>
+            </div>
+            <div class="mock-label">Build Log — Week 3</div>
+            <div class="mock-block"></div>
+            <div class="mock-row">
+              <div style="background:var(--blue)"></div>
+              <div style="background:var(--lime)"></div>
+            </div>
+            <div class="mock-pill">Hardware checklist: 4/6 ✓</div>
+          </div>
+        </div>
+      </div>
+      <div style="color:#fff">
+        <span class="module-tag" style="background:rgba(255,255,255,0.15)">Module 01 — Bootcamps</span>
+        <h2>Build it with your hands, not just your homework.</h2>
+        <p class="lead" style="color:rgba(255,255,255,0.85)">Our in-school bootcamps put real hardware and real code in front of students from day one. Circuits, sensors, 3D-printed parts, and working software — every session ends with something a student actually built.</p>
+        <ul class="feature-list" style="color:rgba(255,255,255,0.9)">
+          <li><span class="arrow" style="color:var(--lime)">→</span> Half-day to multi-week formats, built around your school's schedule</li>
+          <li><span class="arrow" style="color:var(--lime)">→</span> All materials, kits, and trained facilitators included</li>
+          <li><span class="arrow" style="color:var(--lime)">→</span> Ages 8–17, grouped by grade band</li>
+        </ul>
+        <a href="#contact" class="btn btn-lime">Explore Bootcamps</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module 02 — Olympiads -->
+  <div id="olympiads" class="feature" style="background:var(--lavender)">
+    <div class="wrap feature-grid">
+      <div style="color:var(--forest-dark)">
+        <span class="module-tag" style="background:rgba(14,42,28,0.1)">Module 02 — Olympiads</span>
+        <h2>Coach them to win on the international stage.</h2>
+        <p class="lead" style="color:rgba(14,42,28,0.8)">We train students for math and science Olympiads, hacking competitions, and tech challenges with the same rigor used by top international programs — proof-based problem sets, timed mocks, and coaches who've judged the real thing.</p>
+        <ul class="feature-list" style="color:rgba(14,42,28,0.85)">
+          <li><span class="arrow" style="color:var(--maroon)">→</span> Tiered prep for regional, national, and international rounds</li>
+          <li><span class="arrow" style="color:var(--maroon)">→</span> Mock competitions with real-time scoring</li>
+          <li><span class="arrow" style="color:var(--maroon)">→</span> Small coaching pods, matched by skill level</li>
+        </ul>
+        <a href="#contact" class="btn btn-white-on-maroon">Support Our Mission</a>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card" style="background:var(--maroon); color:var(--lavender)">
+          <span class="num">42</span>
+          <span class="label">Medals won in 2025–26</span>
+        </div>
+        <div class="stat-card" style="background:var(--forest-dark); color:var(--lime)">
+          <span class="num">9</span>
+          <span class="label">Countries represented</span>
+        </div>
+        <div class="stat-card span2" style="background:#fff">
+          <span class="num" style="color:var(--forest-dark)">3 tiers</span>
+          <span class="label" style="color:rgba(14,42,28,0.75)">Regional → National → International coaching path</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="about" class="faq">
+  <div class="faq-inner">
+    <h2>Questions? Answered</h2>
+    <div class="faq-list">
+
+      <details class="faq-item">
+        <summary>How can my school book a bootcamp?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="faq-answer">Reach out through our contact form with your school name, grade levels, and preferred dates. We'll schedule a short call to scope the program and confirm a bootcamp window within two weeks.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary>What age groups do you target?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="faq-answer">Our programs are built for students aged 8 to 17, grouped into three grade bands so activities and difficulty match where each student actually is.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary>How do you prepare students for Olympiads?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="faq-answer">Students work through proof-based problem sets, sit timed mock competitions, and get coached by mentors who've judged or competed at the international level — building toward regional, national, and international rounds.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Do you provide the materials and equipment?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="faq-answer">Yes. As a student-led, non-profit initiative, we provide all the specialized software setups, curriculum, and expert mentorship completely free of charge. In return, we just ask host schools to provide the physical classroom space and computer labs. Your school doesn't need to purchase any external kits or source specialized materials—we bring the skills and trainers directly to you.</div>
+      </details>
+
+      
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer id="contact">
+  <div class="footer-banner">
+    <h2>Transform STEM Education Today</h2>
+    <p>Tell us about your school and we'll help you design a bootcamp or Olympiad track that fits your students.</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfBYugL52ODu56O-0Rpoj4HK_Nh0RfvDcKDxyeB_986i7HXSw/viewform?usp=publish-editor" class="btn btn-lime">Get in Touch</a>
+  </div>
+
+  <div class="footer-links">
+    <div class="wrap" style="max-width:1080px">
+      <div class="footer-links-grid">
+        <div class="footer-col">
+          <h3>Programs</h3>
+          <ul>
+            <li><a href="#bootcamps">Bootcamps</a></li>
+            <li><a href="#olympiads">Olympiads</a></li>
+            <li><a href="#">Hack Days</a></li>
+            <li><a href="#">Summer Camps</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Organization</h3>
+          <ul>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#">Our Coaches</a></li>
+            <li><a href="#">Partner Schools</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="#">Olympiad Prep Guide</a></li>
+            <li><a href="#">Grant Eligibility</a></li>
+            <li><a href="#">Curriculum Overview</a></li>
+            <li><a href="#">Press Kit</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Use</a></li>
+            <li><a href="#">Nonprofit Status (501c3)</a></li>
+            <li><a href="#">Safeguarding Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <a href="#top" class="brand">ByteSize STEM</a>
+        <p>© 2026 ByteSize STEM. nonprofit organization.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Floating nav: smooth shrink/inset on scroll down, expand back on scroll up
+  (function(){
+    var header = document.getElementById('siteHeader');
+    var ticking = false;
+
+    function update(){
+      var scrolled = window.scrollY > 24;
+      header.classList.toggle('is-scrolled', scrolled);
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function(){
+      if(!ticking){
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }, { passive:true });
+
+    update();
+  })();
+
+  // Mobile menu toggle
+  var menuBtn = document.getElementById('menuBtn');
+  var mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', function(){
+    var isOpen = mobileMenu.classList.contains('is-open');
+    mobileMenu.classList.toggle('is-open');
+    menuBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  // Hero deck carousel — auto-rotating, fading, accessible
+  (function(){
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.deck-card'));
+    var dotsWrap = document.getElementById('deckDots');
+    var active = 0;
+    var timer;
+
+    cards.forEach(function(_, i){
+      var dot = document.createElement('button');
+      dot.className = 'deck-dot' + (i === 0 ? ' is-active' : '');
+      dot.setAttribute('aria-label', 'Show slide ' + (i + 1));
+      dot.addEventListener('click', function(){ goTo(i, true); });
+      dotsWrap.appendChild(dot);
+    });
+    var dots = Array.prototype.slice.call(dotsWrap.children);
+
+    function goTo(index, userInitiated){
+      cards[active].classList.remove('is-active');
+      dots[active].classList.remove('is-active');
+      active = index;
+      cards[active].classList.add('is-active');
+      dots[active].classList.add('is-active');
+      if(userInitiated) restart();
+    }
+
+    function next(){ goTo((active + 1) % cards.length, false); }
+
+    function restart(){
+      clearInterval(timer);
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(!reduced){ timer = setInterval(next, 4200); }
+    }
+
+    restart();
+  })();
+</script>
+</body>
+</html>
