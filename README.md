@@ -28,7 +28,7 @@ As the **Founder**, I built this responsive landing page to showcase our core mi
 
 ---
 
-## 👥 The Team
+## 👥 The Founding Team
 
 * **Nihal Hyder** — Founder & Executive Director
 * **Muhammad Ubair** — Director of Finance & Academics
